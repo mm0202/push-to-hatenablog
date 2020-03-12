@@ -28,28 +28,28 @@ default:\n
 
 [暗号化されたシークレットの作成と保存 #暗号化されたシークレットの作成](https://help.github.com/ja/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets#about-encrypted-secrets)
 
-## 新規追加
+## はてなブログからの記事取得
+既存記事をはてなブログから取得する場合は、`domain`変数を指定してから、masterブランチで以下のコマンドを実行してください。
+```bash
+docker-compose run go blogsync pull ${domain}
+```
+はてなブログの更新はmasterブランチからの差分が対象となります。
+
+記事数が多いとはてなブログの更新に時間がかかるため、masterブランチで記事を取得・コミットして、ブログの更新を回避してください。
+
+特に初回の記事取得など記事数が多い場合はmasterブランチで取得するようにしてください。
+
+## 新しい記事の追加
 `path`と`domain`変数を設定して、以下のコマンドを実行するとはてなブログとローカルに下書きが追加されます。
 ```bash
 docker-compose run go blogsync post --title=draft --draft --custom-path=${path} ${domain} < draft.md
 ```
 
-## 一括更新
+## 編集した記事の更新
 編集した記事ファイルをGitHubへプッシュすると、GitHubアクションによってmasterブランチからの差分がはてなブログでも更新されます。
 
-GitHubアクションの中身は以下を確認してください。
+GitHubアクションの設定は以下を確認してください。
 
 [.github/workflows/push.yml](.github/workflows/push.yml)
 
-※ masterブランチからの差分を更新するため、masterブランチで編集しても更新されません。master以外のブランチで編集してください。
-
-## はてなブログからの記事取得
-`domain`変数を設定して、以下のコマンドを実行するとはてなブログから記事データがダウンロードされます。
-```bash
-docker-compose run go blogsync pull ${domain}
-```
-取得された記事もmasterブランチからの差分の対象となり、記事数が多いとはてなブログの更新に時間がかかります。
-
-masterブランチで記事の取得・コミットを行えば、差分の対象とはなりません。
-
-特に初回の記事取得など記事数が多い場合はmasterブランチで取得することをおすすめします。
+※ masterブランチからの差分が更新対象となるため、masterブランチで記事ファイルを編集しても記事の更新は実行されません。master以外のブランチで編集してください。
