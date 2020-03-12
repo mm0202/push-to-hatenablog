@@ -1,0 +1,39 @@
+name: push to hatena blog
+
+on: 
+  push:
+    branches-ignore:
+      - master
+
+jobs:
+
+  push:
+    name: push
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Set up Go 1.13
+      uses: actions/setup-go@v1
+      with:
+        go-version: 1.13
+      id: go
+
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v2
+
+    - run: git fetch --prune --unshallow
+
+    - name: Setup blogsync
+      env:
+        BSY: ${{ secrets.BSY }}
+      run: |
+        go get github.com/motemen/blogsync        
+        echo -e ${BSY} > blogsync.yaml
+
+    - name: push
+      env:
+        DOMAIN: ${{ secrets.DOMAIN }}
+      run: |
+        git diff origin/master --name-only \
+        | grep entries/${DOMAIN}/entry \
+        | xargs -t -n1 ~/go/bin/blogsync push
