@@ -2,4 +2,4 @@ FROM golang
 
 RUN go get github.com/motemen/blogsync
 
-CMD blogsync
+CMD blogsync --help
