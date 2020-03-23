@@ -37,3 +37,9 @@ jobs:
         git diff origin/master --name-only \
         | grep entries/${DOMAIN}/entry \
         | xargs -t -n1 ~/go/bin/blogsync push
+
+    # - name: notify to slack
+    #   uses: mm0202/action_slack-notify@master
+    #   if: always()
+    #   env:
+    #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

@@ -53,3 +53,19 @@ GitHubアクションの設定は以下を確認してください。
 [.github/workflows/push.yml](.github/workflows/push.yml)
 
 ※ masterブランチからの差分が更新対象となるため、masterブランチで記事ファイルを編集しても記事の更新は実行されません。master以外のブランチで編集してください。
+
+## Slack通知設定
+### `.github/workflows/push.yml`の調整
+Slackに更新ワークフローの結果を通知する場合は、[.github/workflows/push.yml](.github/workflows/push.yml)内の以下のコメントアウトを解除してください。
+```yaml
+# - name: notify to slack
+#   uses: mm0202/action_slack-notify@master
+#   if: always()
+#   env:
+#     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+```
+### Secretの追加
+`GitHubリポジトリページ/Settings/Secrets`から以下のSecretを追加してください。
+| key | value
+| - | - 
+| SLACK_WEBHOOK_URL | Incoming Webhookで指定されたWebhook URL
