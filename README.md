@@ -11,6 +11,7 @@
 `blogsync.yaml`については、以下のページを参照してください。
 
 [x-motemen/blogsync #Configuration](https://github.com/x-motemen/blogsync#configuration)
+
 ### Secretの追加
 GitHubリポジトリに以下の２つのSecretを追加してください。  
 GitHubアクションで記事を更新するために使用します。
@@ -31,7 +32,7 @@ default:\n
 ## はてなブログからの記事取得
 既存記事をはてなブログから取得する場合は、`domain`変数を指定してから、masterブランチで以下のコマンドを実行してください。
 ```bash
-docker-compose run go blogsync pull ${domain}
+docker-compose run --rm blogsync pull ${domain}
 ```
 はてなブログの更新はmasterブランチからの差分が対象となります。
 
@@ -42,7 +43,7 @@ docker-compose run go blogsync pull ${domain}
 ## 新しい記事の追加
 `path`と`domain`変数を設定して、以下のコマンドを実行するとはてなブログとローカルに下書きが追加されます。
 ```bash
-docker-compose run go blogsync post --title=draft --draft --custom-path=${path} ${domain} < draft.md
+docker-compose run --rm blogsync post --title=draft --draft --custom-path=${path} ${domain} < draft.md
 ```
 
 ## 編集した記事の更新
@@ -64,8 +65,25 @@ Slackに更新ワークフローの結果を通知する場合は、[.github/wor
 #   env:
 #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 ```
+
 ### Secretの追加
 `GitHubリポジトリページ/Settings/Secrets`から以下のSecretを追加してください。
 | key | value
 | - | - 
 | SLACK_WEBHOOK_URL | Incoming Webhookで指定されたWebhook URL
+
+## `scripts`ディレクトリについて
+`scripts`ディレクトリに記事の取得、投稿スクリプトを設置しています。
+
+`scripts`内のスクリプトを使用する場合は、`.env`ファイルを作成して`DOMAIN=[ブログのドメイン]`を追加してください。
+
+### 記事の取得
+ルートディレクトリで`scripts/pull.sh`を実行してください。
+
+`npm`(または`yarn`)環境がある場合は、`npm run pull`(または`yarn run pull`)でも記事を取得できます。
+
+### 記事の投稿
+`scripts/pull.sh`の`custom_path=[custom_path]`の部分に投稿する記事のカスタムパスを設定して、ルートディレクトリで`scripts/pull.sh`を実行してください。
+
+`npm`(または`yarn`)環境がある場合は、`npm run push`(または`yarn run push`)でも記事を取得できます。
+
