@@ -1,6 +1,6 @@
 #!/bin/sh
 
-eval "$(cat ../.env <(echo) <(declare -x))"
+eval "$(cat .env <(echo) <(declare -x))"
 
 custom_path=[custom_path]
 
