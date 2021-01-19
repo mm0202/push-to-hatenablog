@@ -1,8 +1,10 @@
-version: "3.1"
+version: "3.8"
 
-services: 
-  go:
+services:
+  blogsync:
     build: .
-    working_dir: /project_root
-    volumes: 
-      - ./:/project_root
+    working_dir: /working_dir
+    volumes:
+      - ./:/working_dir
+    env_file:
+      - .env
