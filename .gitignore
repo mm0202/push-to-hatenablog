@@ -1,1 +1,3 @@
 **/blogsync.yaml
+.env
+/.idea/
