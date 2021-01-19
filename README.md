@@ -32,7 +32,7 @@ default:\n
 ## はてなブログからの記事取得
 既存記事をはてなブログから取得する場合は、`domain`変数を指定してから、masterブランチで以下のコマンドを実行してください。
 ```bash
-docker-compose run blogsync pull ${domain}
+docker-compose run --rm blogsync pull ${domain}
 ```
 はてなブログの更新はmasterブランチからの差分が対象となります。
 
@@ -43,7 +43,7 @@ docker-compose run blogsync pull ${domain}
 ## 新しい記事の追加
 `path`と`domain`変数を設定して、以下のコマンドを実行するとはてなブログとローカルに下書きが追加されます。
 ```bash
-docker-compose run blogsync post --title=draft --draft --custom-path=${path} ${domain} < draft.md
+docker-compose run --rm blogsync post --title=draft --draft --custom-path=${path} ${domain} < draft.md
 ```
 
 ## 編集した記事の更新
